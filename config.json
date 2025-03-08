@@ -1,0 +1,8 @@
+{
+  "DEFAULT_MODEL": { "label": "SmolLM2 (213MB)", "value": "smollm2:135m" },
+  "ALL_AVAILABLE_MODELS": [
+    { "label": "Tiny Llama (112MB)", "value": "tinyllama:latest" },
+    { "label": "Qwen 2.5 (512MB)", "value": "qwen2.5:0.5b" },
+    { "label": "SmolLM2 (213MB)", "value": "smollm2:135m" }
+  ]
+}

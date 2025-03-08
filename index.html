@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PranAI - Offline AI Assist</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="header-container">
+      <div class="header-title">
+        <div class="header">PranAI</div>
+        <span>Offline AI Assist</span>
+      </div>
+      <div id="model-dropdown" class="model-dropdown">
+        <small class="model-label">Select Model</small>
+        <select name="selected-model" id="selected-model"></select>
+      </div>
+    </div>
+    <div id="progress-container">
+      <div id="progress-bar">Downloading...</div>
+    </div>
+    <div class="chat-container" id="chat-container"></div>
+    <div id="input-area" class="input-area">
+      <input type="text" id="message" placeholder="Type a message..." />
+      <button id="sendBtn" onclick="sendMessage()">Send</button>
+    </div>
+    <div id="status-bar" class="status-bar"></div>
+    <div id="toast" class="toast"></div>
+    <script src="client.js"></script>
+  </body>
+</html>

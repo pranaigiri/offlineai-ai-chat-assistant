@@ -1,0 +1,35 @@
+{
+  "name": "pranai",
+  "version": "1.0.0",
+  "description": "PranAI - Your offline AI Chat Assistant with multiple model selection, free to use, offline, and open source.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "NODE_ENV=development electron .",
+    "build": "electron-builder",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "PranAI",
+    "AI Chat",
+    "offline assistant",
+    "electron",
+    "express",
+    "open source"
+  ],
+  "author": {
+    "name": "Pranai Giri",
+    "address": "Gangtok, Sikkim"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.8.2",
+    "express": "^4.21.2",
+    "ollama": "^0.5.14"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "type": "module"
+}
