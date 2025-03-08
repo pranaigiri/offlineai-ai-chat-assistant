@@ -213,3 +213,24 @@ button:hover {
       width: 95%;
   }
 }
+
+
+/* styles.css (Add these styles to your existing styles.css) */
+.scroll-to-bottom {
+  position: fixed;
+  bottom: 70px;
+  right: 50%;
+  transform: translateX(50%);
+  background-color: #656565;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: none; /* Initially hidden */
+  z-index: 1000; /* Ensure it's on top of other elements */
+}
+
+.scroll-to-bottom:hover {
+  background-color: #727272;
+}

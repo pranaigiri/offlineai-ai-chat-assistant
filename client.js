@@ -1,7 +1,7 @@
 const input = document.getElementById("message");
-input.addEventListener("keydown", function (event) {
+input.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-    event.preventDefault(); // Prevent newline in input
+    event.preventDefault();
     sendMessage();
   }
 });
@@ -9,68 +9,57 @@ input.addEventListener("keydown", function (event) {
 const statusBar = document.getElementById("status-bar");
 const toast = document.getElementById("toast");
 
-// Function to show status bar
-function showStatus(message) {
+const showStatus = (message) => {
   statusBar.innerText = message;
   statusBar.style.display = "block";
-}
+};
 
-// Function to hide status bar
-function hideStatus() {
-  statusBar.style.display = "none";
-}
+const hideStatus = () => (statusBar.style.display = "none");
 
-// Function to show toast notification
-function showToast(message, type = "success") {
+const showToast = (message, type = "success") => {
   toast.innerText = message;
   toast.className = `toast ${type} show`;
-  setTimeout(() => {
-    toast.className = "toast";
-  }, 3000);
-}
+  setTimeout(() => (toast.className = "toast"), 3000);
+};
 
 fetch("./config.json")
-  .then((response) => response.json())
+  .then((res) => res.json())
   .then((data) => {
     const modelSelect = document.getElementById("selected-model");
-
-    // Populate dropdown with models
-    data.ALL_AVAILABLE_MODELS.forEach((model) => {
+    data.ALL_AVAILABLE_MODELS.forEach(({ value, label }) => {
       const option = document.createElement("option");
-      option.value = model.value;
-      option.textContent = model.label;
+      option.value = value;
+      option.textContent = label;
       modelSelect.appendChild(option);
     });
 
-    // Fetch current active model from server
     showStatus("Fetching active model...");
     fetch("http://localhost:3000/active-model")
-      .then((response) => response.json())
-      .then((serverData) => {
+      .then((res) => res.json())
+      .then(({ modelExists, model }) => {
         hideStatus();
-        if (serverData.modelExists) {
-          modelSelect.value = serverData.model;
-          const modelEntry = data.ALL_AVAILABLE_MODELS.find(
-            (m) => m.value === serverData.model
+        if (modelExists) {
+          modelSelect.value = model;
+          showToast(
+            `Active model: ${
+              data.ALL_AVAILABLE_MODELS.find((m) => m.value === model)?.label
+            }`
           );
-          showToast(`Active model: ${modelEntry.label}`);
         } else {
-          const defaultModel = data.DEFAULT_MODEL;
-          modelSelect.value = defaultModel.value;
-          this.checkDownloadProgress(defaultModel.value);
+          modelSelect.value = data.DEFAULT_MODEL.value;
+          checkDownloadProgress(
+            data.DEFAULT_MODEL.value,
+            data.ALL_AVAILABLE_MODELS
+          );
         }
       })
-      .catch((error) => {
+      .catch(() => {
         hideStatus();
         showToast("Failed to load active model", "error");
-        console.error("Error fetching active model:", error);
       });
 
-    // Handle model change event
-    // Listen for Model Change
-    modelSelect.addEventListener("change", (event) => {
-      const selectedModel = event.target.value;
-      console.log("Changing model to:", selectedModel);
+    modelSelect.addEventListener("change", ({ target }) => {
+      const selectedModel = target.value;
       showStatus(`Checking model: ${selectedModel}...`);
 
       fetch("http://localhost:3000/change-model", {
@@ -78,30 +67,23 @@ fetch("./config.json")
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ model: selectedModel }),
       })
-        .then((response) => response.json())
-        .then((result) => {
+        .then((res) => res.json())
+        .then(({ error, activeModel }) => {
           hideStatus();
-          if (result.error) {
-            console.error("Error:", result.error);
-            showToast("Failed to change model", "error");
-          } else {
-            showToast(`Model changed to ${result.activeModel}`);
-          }
+          showToast(
+            error
+              ? "Failed to change model"
+              : `Model changed to ${activeModel}`,
+            error ? "error" : "success"
+          );
         })
-        .catch((error) => {
-          console.error("Error changing model:", error);
-          showToast("Error changing model", "error");
-        });
+        .catch(() => showToast("Error changing model", "error"));
 
       checkDownloadProgress(selectedModel, data.ALL_AVAILABLE_MODELS);
     });
   })
-  .catch((error) => {
-    console.error("Error loading models:", error);
-    showToast("Error loading models", "error");
-  });
+  .catch(() => showToast("Error loading models", "error"));
 
-// Poll for Download Progress
 function checkDownloadProgress(selectedModel, availableModelList) {
   const progressContainer = document.getElementById("progress-container");
   const progressBar = document.getElementById("progress-bar");
@@ -114,25 +96,22 @@ function checkDownloadProgress(selectedModel, availableModelList) {
   const createInfoCard = () => {
     const infoCard = document.createElement("div");
     infoCard.classList.add("info-card");
-    const modelEntry = availableModelList?.find(
-      (m) => m.value === selectedModel
-    );
     infoCard.innerHTML = `You can now have a conversation with <span>PranAI - ${
-      modelEntry?.label?.split(" (")[0] ?? selectedModel ?? "AI Assist"
+      availableModelList
+        ?.find((m) => m.value === selectedModel)
+        ?.label?.split(" (")[0] ??
+      selectedModel ??
+      "AI Assist"
     }</span>`;
     chatContainer.appendChild(infoCard);
   };
 
-  const updateProgressBar = (progress) => {
+  const updateProgressBar = () => {
     dots = (dots + 1) % 4;
     progressBar.innerText = `Downloading model${".".repeat(dots)}`;
-
-    // Show progress bar
     progressContainer.style.transition = "height 0.5s ease, opacity 0.5s ease";
     progressContainer.style.height = "30px";
     progressContainer.style.opacity = "1";
-
-    // Disable inputs during download
     inputArea.classList.add("disabled");
     modelDropdown.classList.add("disabled");
   };
@@ -141,106 +120,120 @@ function checkDownloadProgress(selectedModel, availableModelList) {
     clearInterval(interval);
     progressContainer.style.backgroundColor = "#42b12e";
     progressBar.innerText = "Download Complete!";
-
-    // Re-enable inputs
     inputArea.classList.remove("disabled");
     modelDropdown.classList.remove("disabled");
-
-    // Hide progress bar smoothly
     setTimeout(() => {
       progressContainer.style.height = "0px";
       progressContainer.style.opacity = "0";
     }, 2000);
-
     createInfoCard();
   };
 
   const interval = setInterval(async () => {
     try {
-      const response = await fetch(
+      const res = await fetch(
         `http://localhost:3000/download-progress?model=${encodeURIComponent(
           selectedModel
         )}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch progress");
-
-      const res = await response.json();
-
-      if (res.progress >= 100 && res.modelExists) {
-        completeDownload();
-      } else if (res.progress > 0 || !res.modelExists) {
-        updateProgressBar(res.progress);
-      } else {
-        clearInterval(interval);
-        progressContainer.style.height = "0px";
-        progressContainer.style.opacity = "0";
-        inputArea.classList.remove("disabled");
-        modelDropdown.classList.remove("disabled");
-        createInfoCard();
-      }
-    } catch (error) {
-      console.error("Error checking download progress:", error);
+      ).then((r) => r.json());
+      if (res.progress >= 100 && res.modelExists) completeDownload();
+      else if (res.progress > 0 || !res.modelExists) updateProgressBar();
+      else clearInterval(interval);
+    } catch {
       clearInterval(interval);
     }
   }, 1000);
 }
 
-// Send Message with Typing Animation
+function generateSessionId() {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
+}
+
+let sessionId = localStorage.getItem("sessionId") || generateSessionId();
+localStorage.setItem("sessionId", sessionId);
+
 async function sendMessage() {
-  const chatContainer = document.getElementById("chat-container");
   const input = document.getElementById("message");
-
-  const message = input.value.trim(); // Store message before clearing input
-
+  const message = input.value.trim();
   if (!message) return;
 
-  appendMessage(message, "user-message");
-  input.value = ""; // Clear input after storing message
-
-  // Show Typing Animation
-  const typingIndicator = appendMessage(
-    "PranAI is typing",
-    "ai-message typing-indicator"
-  );
-  let dots = 0;
-  const typingAnimation = setInterval(() => {
-    dots = (dots + 1) % 4;
-    typingIndicator.innerText = "PranAI is typing" + ".".repeat(dots);
-  }, 500);
+  appendMessage(message, "user-message", true);
+  input.value = "";
 
   try {
-    const response = await fetch("http://localhost:3000/chat", {
+    const res = await fetch("http://localhost:3000/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: message }), // Use stored message
+      body: JSON.stringify({ message, sessionId }),
     });
 
-    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    if (!res.ok) {
+      throw new Error("Error fetching response.");
+    }
 
-    const data = await response.json();
+    const reader = res.body.getReader();
+    let aiMessageElement = appendMessage("", "ai-message");
 
-    clearInterval(typingAnimation);
-    typingIndicator.remove();
-
-    appendMessage(data.response, "ai-message");
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      aiMessageElement.innerText += new TextDecoder().decode(value);
+    }
   } catch (error) {
-    console.error("Error fetching AI response:", error);
-    clearInterval(typingAnimation);
-    typingIndicator.remove();
     appendMessage(
       "Error fetching response. Please try again.",
-      "ai-message error"
+      "ai-message error",
+      false
     );
   }
 }
 
-// Helper function to append messages
-function appendMessage(text, className) {
+function appendMessage(text, className, disableTyping = false) {
   const chatContainer = document.getElementById("chat-container");
   const message = document.createElement("div");
   message.className = `message ${className}`;
-  message.innerText = text;
   chatContainer.appendChild(message);
   chatContainer.scrollTop = chatContainer.scrollHeight;
+  if (disableTyping) {
+    message.innerHTML = text;
+    return message;
+  }
+  let index = 0;
+  (function typeCharacter() {
+    if (index < text.length) {
+      message.innerHTML = text.slice(0, ++index);
+      setTimeout(typeCharacter, 20);
+    }
+  })();
   return message;
 }
+
+const chatContainerA = document.getElementById("chat-container");
+const scrollToBottomButton = document.createElement("button");
+scrollToBottomButton.innerHTML = "▼";
+scrollToBottomButton.classList.add("scroll-to-bottom");
+document.body.appendChild(scrollToBottomButton);
+
+scrollToBottomButton.addEventListener("click", () => {
+  chatContainerA.scrollTo({
+    top: chatContainerA.scrollHeight,
+    behavior: "smooth",
+  });
+  //scrollToBottomButton.style.display = "none";
+});
+
+chatContainerA.addEventListener("scroll", () => {
+  if (
+    chatContainerA.scrollHeight -
+      chatContainerA.scrollTop -
+      chatContainerA.clientHeight >
+    200 // Adjust this value to control when the button appears
+  ) {
+    scrollToBottomButton.style.display = "block";
+  } else {
+    scrollToBottomButton.style.display = "none";
+  }
+});
