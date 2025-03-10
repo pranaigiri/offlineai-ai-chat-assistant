@@ -1,25 +1,25 @@
 # PranAI - Offline AI Chat Assistant
 
 ![PranAI Screenshot](path/to/screenshot.png)  
-_A lightweight, open-source AI chat assistant that works offline with multiple model selection. Free to use, private, and built using Electron & Express._  
+_A lightweight, open-source AI chat assistant that works offline with multiple model selection. Free to use, private, and built using Electron & Express._
 
-## 🚀 Features  
+## 🚀 Features
 
-- **Offline Mode**: No internet required after model download.  
-- **Multiple Open-Source LLMs**: Download and use any [Ollama-compatible model](https://ollama.com/search).  
-- **Session Memory**: Keeps track of your conversations.  
-- **Switch Models Instantly**: Change AI models on the go during chats.  
-- **Privacy Focused**: All data stays on your local machine.  
+- **Offline Mode**: No internet required after model download.
+- **Multiple Open-Source LLMs**: Download and use any [Ollama-compatible model](https://ollama.com/search).
+- **Session Memory**: Keeps track of your conversations.
+- **Switch Models Instantly**: Change AI models on the go during chats.
+- **Privacy Focused**: All data stays on your local machine.
 
-## 👅 Installation  
+## 👅 Installation
 
-### Prerequisites  
+### Prerequisites
 
-- [Node.js](https://nodejs.org/) (LTS Recommended)  
-- [Electron](https://www.electronjs.org/)  
-- [Ollama](https://ollama.ai/) installed and configured  
+- [Node.js](https://nodejs.org/) (LTS Recommended)
+- [Electron](https://www.electronjs.org/)
+- [Ollama](https://ollama.ai/) installed and configured
 
-### Steps  
+### Steps
 
 ```sh
 # Clone the repository
@@ -31,17 +31,17 @@ npm install
 
 # Start the application
 npm start
-```  
+```
 
-## 🔧 Adding Models  
+## 🔧 Adding Models
 
-You can add custom [Ollama-compatible models](https://ollama.com/search) to PranAI:  
+You can add custom [Ollama-compatible models](https://ollama.com/search) to PranAI:
 
-1. Open `config/config.json`.  
-2. Add the model details under `ALL_AVAILABLE_MODELS`.  
-3. Ensure the `value` matches the model name used in `ollama pull "model_name"`.  
+1. Open `config/config.json`.
+2. Add the model details under `ALL_AVAILABLE_MODELS`.
+3. Ensure the `value` matches the model name used in `ollama pull "model_name"`.
 
-### Example:  
+### Example:
 
 ```json
 {
@@ -55,6 +55,7 @@ You can add custom [Ollama-compatible models](https://ollama.com/search) to Pran
 ```
 
 **To change a default model, replace the object in `DEFAULT_MODEL` from `ALL_AVAILABLE_MODELS`:**
+
 ```json
 {
   "DEFAULT_MODEL": { "label": "Qwen 2.5 (397MB)", "value": "qwen2.5:0.5b" }
@@ -65,7 +66,8 @@ You can add custom [Ollama-compatible models](https://ollama.com/search) to Pran
 
 ```json
 {
-  "label": "Your Model Name (any name you prefer)", "value": "model_identifier"
+  "label": "Your Model Name (any name you prefer)",
+  "value": "model_identifier"
 }
 ```
 
@@ -73,34 +75,48 @@ You can add custom [Ollama-compatible models](https://ollama.com/search) to Pran
 
 ```json
 {
-  "label": "DeepSeek", "value": "deepseek-r1" 
+  "label": "DeepSeek",
+  "value": "deepseek-r1"
 }
 ```
 
 This will use: `ollama pull deepseek-r1`
 
+4. Restart PranAI and select the model from the **Model Selection** panel. The model will be downloaded once and stored locally in Ollama.
 
-4. Restart PranAI and select the model from the **Model Selection** panel. The model will be downloaded once and stored locally in Ollama.  
+### 🌠 Improvements Needed
 
-## ⚠️ Project Status  
+- **Realtime Download Progress:** Parse and display the progress of `ollama pull` execution, although progress information is visible in the console.
+- **Remove Flickering on Code Highlight:** Fix flickering issues when displaying code snippets with syntax highlighting.
+- **Live Server Compatibility:** Making the app function in a live server environment without Electron.
 
-This project is a personal project built for learning purposes within 2 days. It requires refactoring, optimization, and several improvements. Contributions and suggestions are welcome!  
+## ⚠️ Project Status
 
-## 🐜 License  
+This project is a personal project built for learning purposes within 2 days. It requires refactoring, optimization, and several improvements. Contributions and suggestions are welcome!
 
-This project is licensed under the [ISC License](LICENSE).  
+## 🐜 License
 
-## 🤝 Contributing  
+This project is licensed under the [ISC License](LICENSE).
 
-1. Fork the repository.  
-2. Create a new branch (`feature/new-feature`).  
-3. Commit your changes.  
-4. Push to your fork.  
-5. Open a Pull Request.  
+## 🤝 How to Contribute
 
----  
+We welcome contributions to improve PranAI! Here’s how you can help:
 
-For any issues, suggestions, or feature requests, feel free to open an issue in the repository!  
+- **Bug Fixes & Optimizations**: Identify and fix issues or improve performance.
+- **Feature Enhancements**: Suggest and implement new features.
+- **UI/UX Improvements**: Enhance the user experience and design.
+- **Documentation**: Improve existing documentation or add missing details.
+
+### Contribution Steps
+
+1. Fork the repository.
+2. Create a new branch (`feature/new-feature`).
+3. Commit your changes.
+4. Push to your fork.
+5. Open a Pull Request.
+
+---
+
+For any issues, suggestions, or feature requests, feel free to open an issue in the repository!
 
 **Happy Chatting! 🤖**
-
