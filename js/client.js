@@ -135,6 +135,8 @@ function checkDownloadProgress(selectedModel, availableModelList) {
       "AI Assist"
     }</span>`;
     chatContainer.appendChild(infoCard);
+
+    scrollChatToBottom();
   };
 
   const updateProgressBar = () => {
@@ -282,6 +284,13 @@ function removeWelcomeMessage() {
   const welcomeMsgContainer = document.getElementById("welcome-message");
   if (welcomeMsgContainer) {
     welcomeMsgContainer.style.display = "none";
+  }
+}
+
+function addWelcomeMessage() {
+  const welcomeMsgContainer = document.getElementById("welcome-message");
+  if (welcomeMsgContainer) {
+    welcomeMsgContainer.style.display = "flex";
   }
 }
 
@@ -487,7 +496,23 @@ function loadChatSession(selectedSessionId) {
     );
   });
 
+  if (messages.length == 0) {
+    addWelcomeMessage();
+  } else {
+    removeWelcomeMessage();
+  }
+
   showToast("Loaded previous chat.", "info");
+}
+
+function scrollChatToBottom() {
+  const chatOuterContainer = document.getElementById("chat-outer-container");
+  if (chatOuterContainer) {
+    chatOuterContainer.scrollTo({
+      top: chatOuterContainer.scrollHeight,
+      behavior: "smooth",
+    });
+  }
 }
 
 startNewChatSession();

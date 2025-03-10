@@ -427,12 +427,25 @@ body {
 }
 
 .welcome-message {
-  height: calc(100vh - 180px);
-  align-content: center;
+  justify-content: center;
+  align-items: center;
+  display: inline-flex;
+  flex-flow: column;
+  padding: 20px;
+  border-radius: 8px;
+  font-family: sans-serif;
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 20px auto;
   text-align: center;
-  width: 60%;
-  margin: auto;
-  font-size: small;
+  width: 70%;
+  font-size: 14px;
   color: gray;
-  font-weight: 400;
+  align-content: center;
+  height: 100%;
+}
+
+.welcome-message img {
+  width: 40px;
+  margin-right: 15px; /* Spacing between image and text */
 }

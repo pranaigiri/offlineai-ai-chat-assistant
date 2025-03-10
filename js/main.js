@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from "electron";
+import { app, BrowserWindow, Tray, Menu, screen } from "electron";
 import { spawn } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -7,6 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 let mainWindow;
+let tray;
 let serverProcess;
 
 app.whenReady().then(() => {
@@ -24,18 +25,35 @@ app.whenReady().then(() => {
     console.log(`API server exited with code: ${code}`);
   });
 
-  // Create the Electron window
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize; // Get usable screen size
+
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: Math.min(500, width / 3), // Set width to 1/3rd of the screen or 400px max
+    height: height, // Full screen height
+    x: width - Math.min(500, width / 3), // Position at right edge of screen
+    y: 0, // Start from top
+    alwaysOnTop: false, // Set true if you want it to stay above other windows
+    minimizable: true,
+    resizable: true,
+    icon: path.join(__dirname, "../assets/logo/PranAI.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
     },
   });
-
   mainWindow.loadFile("index.html");
+
+  // Add system tray icon (optional)
+  tray = new Tray(path.join(__dirname, "../assets/logo/PranAI.ico"));
+  tray.setToolTip("PranAI Chat Assistant");
+  tray.setContextMenu(
+    Menu.buildFromTemplate([
+      { label: "Open", click: () => mainWindow.show() },
+      { label: "Exit", role: "quit" },
+    ])
+  );
 
   // Handle window close properly
   mainWindow.on("closed", () => {
