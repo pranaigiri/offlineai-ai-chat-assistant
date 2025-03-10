@@ -246,14 +246,12 @@ async function sendMessage() {
 
       // Update the AI message with Markdown rendering
       aiMessageElement.innerHTML = marked.parse(aiMessageContent);
-
-      // Reapply syntax highlighting to code blocks
       setTimeout(() => {
         document.querySelectorAll("pre code").forEach((block) => {
           hljs.highlightElement(block);
           addCopyButton(block);
         });
-      }, 0); // Slight delay ensures text is updated before highlighting
+      }, 0);
     }
 
     // Add AI response to chat history
