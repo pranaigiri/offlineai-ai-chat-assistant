@@ -1,6 +1,6 @@
 # PranAI - Offline AI Chat Assistant
 
-![PranAI Screenshot](path/to/screenshot.png)  
+![CoverDark 2](https://github.com/user-attachments/assets/13071368-4f5f-4e6a-9ea7-6f99e0689842)
 _A lightweight, open-source AI chat assistant that works offline with multiple model selection. Free to use, private, and built using Electron & Express._
 
 ## 🚀 Features
@@ -84,15 +84,14 @@ This will use: `ollama pull deepseek-r1`
 
 4. Restart PranAI and select the model from the **Model Selection** panel. The model will be downloaded once and stored locally in Ollama.
 
-### 🌠 Improvements Needed
-
-- **Realtime Download Progress:** Parse and display the progress of `ollama pull` execution, although progress information is visible in the console.
-- **Remove Flickering on Code Highlight:** Fix flickering issues when displaying code snippets with syntax highlighting.
-- **Live Server Compatibility:** Making the app function in a live server environment without Electron.
-
 ## ⚠️ Project Status
 
 This project is a personal project built for learning purposes within 2 days. It requires refactoring, optimization, and several improvements. Contributions and suggestions are welcome!
+
+### 🌠 Improvements Needed
+- **Realtime Download Progress:** Parse and display the progress of `ollama pull` execution, although progress information is visible in the console.
+- **Remove Flickering on Code Highlight:** Fix flickering issues when displaying code snippets with syntax highlighting.
+- **Live Server Compatibility:** Making the app function in a live server environment without Electron.
 
 ## 🐜 License
 
@@ -114,6 +113,20 @@ We welcome contributions to improve PranAI! Here’s how you can help:
 3. Commit your changes.
 4. Push to your fork.
 5. Open a Pull Request.
+
+## 📸 Preview
+Here are some previews of PranAI in action:
+### Chat Memory
+![Chat Memory](https://github.com/user-attachments/assets/77d2a545-5c1e-4593-8ffa-22b8fd245708)
+
+
+### Desktop Mode
+![Desktop Mode](https://github.com/user-attachments/assets/31a5305c-cb4e-4746-ac76-cbf08f7705c5)
+
+
+### Highlight & Chat History
+![Highlight   History](https://github.com/user-attachments/assets/566d11b1-9d1f-4f4b-bc6c-6a6155d14351)
+
 
 ---
 
