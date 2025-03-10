@@ -336,24 +336,12 @@ function applySyntaxHighlighting() {
 // Function to add a copy button to code blocks
 function addCopyButton(codeBlock) {
   const pre = codeBlock.parentElement;
-  pre.style.position = "relative";
-  pre.style.overflowX = "auto"; // Enable horizontal scrolling for long code blocks
 
   if (pre.querySelector(".copy-btn")) return; // Prevent duplicate buttons
 
   const button = document.createElement("button");
   button.innerText = "Copy";
   button.className = "copy-btn";
-  button.style.position = "absolute";
-  button.style.top = "8px";
-  button.style.right = "8px";
-  button.style.padding = "4px 8px";
-  button.style.fontSize = "12px";
-  button.style.border = "none";
-  button.style.cursor = "pointer";
-  button.style.background = "#444";
-  button.style.color = "#fff";
-  button.style.borderRadius = "4px";
 
   button.addEventListener("click", () => {
     navigator.clipboard.writeText(codeBlock.innerText).then(() => {

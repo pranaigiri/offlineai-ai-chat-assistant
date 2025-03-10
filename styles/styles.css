@@ -450,3 +450,26 @@ body {
   width: 40px;
   margin-right: 15px; /* Spacing between image and text */
 }
+
+pre {
+  position: relative;
+  overflow-x: auto; /* Enable horizontal scrolling for long code blocks */
+}
+
+.copy-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  border: none;
+  cursor: pointer;
+  background: #444;
+  color: #fff;
+  border-radius: 4px;
+  display: none; /* Hide by default */
+}
+
+pre:hover .copy-btn {
+  display: block; /* Show on hover */
+}
