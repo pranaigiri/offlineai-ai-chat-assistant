@@ -427,11 +427,11 @@ body {
 }
 
 .welcome-message {
-  display: flex;
   height: calc(100vh - 180px);
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+  align-content: center;
+  text-align: center;
+  width: 60%;
+  margin: auto;
   font-size: small;
   color: gray;
   font-weight: 400;
