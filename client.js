@@ -18,8 +18,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   messageInput.addEventListener("keydown", (event) => {
     if (event.key === "Enter") {
-      event.preventDefault(); // Prevent newline in input
-      sendMessage();
+      if (event.shiftKey) {
+        // Allow new line on Shift + Enter
+        event.preventDefault();
+        messageInput.setRangeText(
+          "\n",
+          messageInput.selectionStart,
+          messageInput.selectionEnd,
+          "end"
+        );
+      } else {
+        // Send message on Enter
+        event.preventDefault();
+        sendMessage();
+      }
     }
   });
 });

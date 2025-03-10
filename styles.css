@@ -126,42 +126,63 @@ body {
 .input-area {
   display: flex;
   padding: 10px;
-  background-color: #fff;
+  background-color: #f9f9f9; /* Light grey background for a modern look */
   align-items: center;
   max-width: 800px;
   margin: auto;
   width: 90%;
-  border-top-right-radius: 12px;
-  border-top-left-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 25px; /* More rounded corners */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
+  border: 1px solid #e0e0e0; /* Add a subtle border */
 }
 
 #message {
   flex-grow: 1;
-  padding: 10px 15px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  margin-right: 10px;
+  padding: 14px 22px;
+  border: 1px solid #dcdcdc;
+  border-radius: 28px;
+  margin-right: 12px;
   outline: none;
+  resize: vertical;
+  font-size: 16px;
+  line-height: 1.6;
+  max-height: 200px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* More complete font stack */
+  transition: border-color 0.3s, box-shadow 0.3s;
+  color: #333;
 }
 
 #message:focus {
-  border-color: #ff9900;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  border-color: #ff9900; /* Blue focus color */
+  box-shadow: 0 0 8px rgba(255, 145, 0, 0.3); /* Softer focus shadow */
 }
 
-button {
-  padding: 10px 20px;
-  background-color: #ff9900;
-  color: white;
+#sendBtn {
+  background: none; /* Remove default button background */
   border: none;
-  border-radius: 20px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #ff9900;
+  aspect-ratio: 1 / 1;
+  font-size: 24px;
+  transition: color 0.3s;
+  border-radius: 100%;
 }
 
-button:hover {
-  background-color: #0056b3;
+#sendBtn img{
+  filter: invert(1);
+}
+
+#sendBtn:hover {
+  background: #f09104;
+}
+
+/* Optional: Add a subtle placeholder style */
+#message::placeholder {
+  color: #999;
 }
 
 .header-container {

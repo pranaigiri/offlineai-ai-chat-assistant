@@ -52,10 +52,18 @@
           <div id="progress-bar">Downloading...</div>
         </div>
         <div class="chat-container" id="chat-container"></div>
+
         <div id="input-area" class="input-area">
-          <input type="text" id="message" placeholder="Type a message..." />
-          <button id="sendBtn" onclick="sendMessage()">Send</button>
+          <textarea
+            id="message"
+            rows="1"
+            placeholder="Type a message..."
+          ></textarea>
+          <button id="sendBtn" onclick="sendMessage()">
+            <img src="./assets/icons/send.png" alt="send" />
+          </button>
         </div>
+
         <div id="status-bar" class="status-bar"></div>
         <div id="toast" class="toast"></div>
       </div>
