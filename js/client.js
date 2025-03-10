@@ -52,7 +52,7 @@ const showToast = (message, type = "success") => {
   setTimeout(() => (toast.className = "toast"), 3000);
 };
 
-fetch("./config.json")
+fetch("config/config.json")
   .then((res) => res.json())
   .then((data) => {
     const modelSelect = document.getElementById("selected-model");
@@ -107,9 +107,10 @@ fetch("./config.json")
             error ? "error" : "success"
           );
         })
+        .finally(() => {
+          checkDownloadProgress(selectedModel, data.ALL_AVAILABLE_MODELS);
+        })
         .catch(() => showToast("Error changing model", "error"));
-
-      checkDownloadProgress(selectedModel, data.ALL_AVAILABLE_MODELS);
     });
   })
   .catch(() => showToast("Error loading models", "error"));
@@ -348,28 +349,49 @@ function startNewChatSession() {
   loadChatHistory(); // Refresh chat history list
 }
 
-loadChatHistory();
 function loadChatHistory() {
   const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || {};
   const chatHistoryContainer = document.getElementById("chat-history");
   chatHistoryContainer.innerHTML = "";
 
-  Object.keys(chatHistory).forEach((session) => {
-    const chatItem = document.createElement("div");
-    chatItem.className = "sidebar-item";
+  const currentSession = localStorage.getItem("sessionId"); // Get active session ID
 
-    // for chat title
-    const messages = chatHistory[session] || [];
-    const firstUserMessage =
-      messages.find((msg) => msg.role === "user")?.content || "New Chat";
-    chatItem.innerText =
-      firstUserMessage.length > 20
-        ? firstUserMessage.slice(0, 20) + "..."
-        : firstUserMessage;
+  // Reverse the session order to show the latest on top
+  Object.keys(chatHistory)
+    .reverse()
+    .forEach((session) => {
+      const chatItem = document.createElement("div");
+      chatItem.className = "sidebar-item";
 
-    chatItem.addEventListener("click", () => loadChatSession(session));
-    chatHistoryContainer.appendChild(chatItem);
-  });
+      // Highlight active session
+      if (session === currentSession) {
+        chatItem.classList.add("active");
+      }
+
+      // Get the first user message as the chat title
+      const messages = chatHistory[session] || [];
+      const firstUserMessage =
+        messages.find((msg) => msg.role === "user")?.content || "New Chat";
+
+      chatItem.innerText =
+        firstUserMessage.length > 20
+          ? firstUserMessage.slice(0, 20) + "..."
+          : firstUserMessage;
+
+      chatItem.addEventListener("click", () => {
+        loadChatSession(session);
+
+        // Remove 'active' class from all chat items
+        document.querySelectorAll(".sidebar-item").forEach((item) => {
+          item.classList.remove("active");
+        });
+
+        // Add 'active' class to the clicked chat item
+        chatItem.classList.add("active");
+      });
+
+      chatHistoryContainer.appendChild(chatItem);
+    });
 }
 
 function loadChatSession(selectedSessionId) {
@@ -400,3 +422,5 @@ function loadChatSession(selectedSessionId) {
 
   showToast("Loaded previous chat.", "info");
 }
+
+loadChatHistory();

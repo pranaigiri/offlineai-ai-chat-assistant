@@ -11,7 +11,7 @@ let serverProcess;
 
 app.whenReady().then(() => {
   // Start the API server using spawn instead of exec
-  serverProcess = spawn("node", ["server.js"], {
+  serverProcess = spawn("node", ["js/server.js"], {
     stdio: "inherit",
     detached: false,
   });

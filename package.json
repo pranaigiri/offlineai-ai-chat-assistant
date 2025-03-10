@@ -2,7 +2,7 @@
   "name": "pranai",
   "version": "1.0.0",
   "description": "PranAI - Your offline AI Chat Assistant with multiple model selection, free to use, offline, and open source.",
-  "main": "main.js",
+  "main": "js/main.js",
   "scripts": {
     "start": "electron .",
     "dev": "NODE_ENV=development electron .",

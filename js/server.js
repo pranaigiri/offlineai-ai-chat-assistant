@@ -9,7 +9,7 @@ const MAX_HISTORY_LENGTH = 20;
 const app = express();
 app.use(express.json());
 
-const config = JSON.parse(fs.readFileSync("./config.json", "utf-8"));
+const config = JSON.parse(fs.readFileSync("config/config.json", "utf-8"));
 let MODEL_NAME = config.DEFAULT_MODEL.value;
 let downloadProgress = 0;
 
@@ -38,12 +38,15 @@ app.get("/download-progress", async (req, res) => {
   const modelName = req.query.model || MODEL_NAME;
   try {
     const models = await ollama.list();
+    const isModelExists = models.models.some((m) => m.name === modelName);
+
     res.json({
-      progress: downloadProgress,
+      progress: isModelExists ? 100 : downloadProgress || 0,
       model: modelName,
-      modelExists: models.models.some((m) => m.name === modelName),
+      modelExists: isModelExists,
     });
-  } catch {
+  } catch (error) {
+    console.error("Error fetching model list:", error);
     res.status(500).json({ error: "Failed to fetch model list" });
   }
 });
