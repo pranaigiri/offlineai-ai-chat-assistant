@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PranAI</title>
     <link rel="stylesheet" href="styles/styles.css" />
+    <!-- Markdown Parser -->
+    <script src="js/cdn/marked.min.js"></script>
+
+    <!-- Syntax Highlighter -->
+    <link rel="stylesheet" href="styles/github-dark.min.css" />
+    <script src="js/cdn/highlight.js"></script>
   </head>
   <body>
     <div class="ui-container">
@@ -51,17 +57,26 @@
         <div id="progress-container">
           <div id="progress-bar">Downloading...</div>
         </div>
-        <div class="chat-container" id="chat-container"></div>
+
+        <div class="chat-outer-container">
+          <p id="welcome-message" class="welcome-message">
+            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Sit,
+            nulla.
+          </p>
+          <div class="chat-container" id="chat-container"></div>
+        </div>
 
         <div id="input-area" class="input-area">
-          <textarea
-            id="message"
-            rows="1"
-            placeholder="Type a message..."
-          ></textarea>
-          <button id="sendBtn" onclick="sendMessage()">
-            <img src="./assets/icons/send.png" alt="send" />
-          </button>
+          <div id="input-area-inner" class="input-area-inner">
+            <textarea
+              id="message"
+              rows="1"
+              placeholder="Type a message..."
+            ></textarea>
+            <button id="sendBtn" onclick="sendMessage()">
+              <img src="./assets/icons/send.png" alt="send" />
+            </button>
+          </div>
         </div>
 
         <div id="status-bar" class="status-bar"></div>

@@ -37,9 +37,8 @@ body {
 }
 */
 
-
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -47,7 +46,6 @@ body {
   overflow-x: hidden;
   background-color: #f4f4f4;
 }
-
 
 .sidebar {
   width: 0px;
@@ -60,12 +58,13 @@ body {
   transition: width 0.3s ease; /* Smooth transition for sidebar width */
 }
 
-.sidebar-header{
+.sidebar-header {
   position: sticky;
   top: 0;
 }
 
-.sidebar-header, .header-container {
+.sidebar-header,
+.header-container {
   min-height: 40px;
   padding: 10px;
   background-color: white;
@@ -94,34 +93,31 @@ body {
   background-color: #e0e0e0;
 }
 
-
 .main-content {
   position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
-  transition: .3s ease;
+  transition: 0.3s ease;
 }
 
-.header-text{
+.header-text {
   text-align: left;
-  padding-left: .5rem;
+  padding-left: 0.5rem;
   white-space: nowrap;
 }
-
 
 .ui-container {
   display: flex;
   height: 100%;
 }
 
-
 .ui-container.sidebar-open .sidebar {
-  width: 300px;
+  width: 200px;
 }
 
 .ui-container.sidebar-open .main-content {
-  width: calc(100vw - 300px);
+  width: calc(100vw - 200px);
 }
 
 .ui-container.sidebar-open .header-text {
@@ -138,12 +134,20 @@ body {
   color: #676767;
 }
 
+.chat-outer-container {
+  display: flex;
+  overflow-y: auto;
+}
+
 .chat-container {
   flex-grow: 1;
   overflow-y: auto;
   padding: 20px;
+  padding-bottom: 7rem;
   display: flex;
   flex-direction: column;
+  max-width: 800px;
+  margin: auto;
 }
 
 .message {
@@ -161,6 +165,10 @@ body {
   border-bottom-right-radius: 5px;
 }
 
+.user-message > p {
+  margin: 0;
+}
+
 .ai-message {
   background-color: #e0e0e0;
   color: #333;
@@ -169,16 +177,24 @@ body {
 }
 
 .input-area {
-  display: flex;
-  padding: 10px;
-  background-color: #f9f9f9; /* Light grey background for a modern look */
-  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%, -10px);
   max-width: 800px;
   margin: auto;
   width: 90%;
-  border-radius: 25px; /* More rounded corners */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* Slightly stronger shadow */
-  border: 1px solid #e0e0e0; /* Add a subtle border */
+}
+
+.input-area-inner {
+  position: relative;
+  display: flex;
+  padding: 10px;
+  background-color: #f9f9f9;
+  align-items: center;
+  border-radius: 25px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
 }
 
 #message {
@@ -192,7 +208,8 @@ body {
   font-size: 16px;
   line-height: 1.6;
   max-height: 200px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; /* More complete font stack */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif; /* More complete font stack */
   transition: border-color 0.3s, box-shadow 0.3s;
   color: #333;
 }
@@ -217,7 +234,7 @@ body {
   border-radius: 100%;
 }
 
-#sendBtn img{
+#sendBtn img {
   filter: invert(1);
 }
 
@@ -256,7 +273,8 @@ body {
   color: #333;
 }
 
-.status-bar, .toast {
+.status-bar,
+.toast {
   position: fixed;
   left: 50%;
   transform: translateX(-50%);
@@ -336,44 +354,50 @@ body {
 }
 
 @keyframes fadeInOut {
-  0%, 100% { opacity: 0; }
-  10%, 90% { opacity: 1; }
+  0%,
+  100% {
+    opacity: 0;
+  }
+  10%,
+  90% {
+    opacity: 1;
+  }
 }
 
 @media (max-width: 600px) {
   .chat-container {
-      width: 95%;
+    width: 95%;
   }
 }
 
 /* styles.css (Add these styles to your existing styles.css) */
 .scroll-to-bottom {
   position: absolute;
-  bottom: 70px;
   right: 50%;
   transform: translateX(50%);
   background-color: #656565;
   color: white;
   border: none;
-  padding: 10px 15px;
+  aspect-ratio: 1 / 1;
   border-radius: 5px;
   cursor: pointer;
-  display: none; /* Initially hidden */
-  z-index: 1000; /* Ensure it's on top of other elements */
+  display: none;
+  z-index: 1000;
+  top: -3rem;
 }
 
 .scroll-to-bottom:hover {
   background-color: #727272;
 }
 
-.menu-icon, .close-icon {
+.menu-icon,
+.close-icon {
   cursor: pointer;
 }
 
 .hidden {
   display: none;
 }
-
 
 .sidebar-item.new-chat-button {
   display: flex;
@@ -400,4 +424,15 @@ body {
 .new-chat-icon {
   width: 20px;
   height: 20px;
+}
+
+.welcome-message {
+  display: flex;
+  height: calc(100vh - 180px);
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-size: small;
+  color: gray;
+  font-weight: 400;
 }

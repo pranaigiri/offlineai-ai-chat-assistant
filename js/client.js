@@ -231,15 +231,26 @@ async function sendMessage() {
     if (!res.ok) throw new Error("Error fetching response.");
 
     const reader = res.body.getReader();
-    let aiMessageElement = appendMessage("", "ai-message");
+    let aiMessageElement = appendMessage("", "ai-message"); // Create an empty div
     let aiMessageContent = "";
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
+
       const chunk = new TextDecoder().decode(value);
-      aiMessageElement.innerText += chunk;
-      aiMessageContent += chunk;
+      aiMessageContent += chunk; // Append the new chunk to the message content
+
+      // Update the AI message with Markdown rendering
+      aiMessageElement.innerHTML = marked.parse(aiMessageContent);
+
+      // Reapply syntax highlighting to code blocks
+      setTimeout(() => {
+        document.querySelectorAll("pre code").forEach((block) => {
+          hljs.highlightElement(block);
+          addCopyButton(block);
+        });
+      }, 0); // Slight delay ensures text is updated before highlighting
     }
 
     // Add AI response to chat history
@@ -268,31 +279,88 @@ async function sendMessage() {
 }
 
 function appendMessage(text, className, disableTyping = false) {
+  const welcomeMsgContainer = document.getElementById("welcome-message");
+  if (welcomeMsgContainer) {
+    welcomeMsgContainer.style.display = "none";
+  }
+
   const chatContainer = document.getElementById("chat-container");
   const message = document.createElement("div");
   message.className = `message ${className}`;
   chatContainer.appendChild(message);
   chatContainer.scrollTop = chatContainer.scrollHeight;
+
+  // Handle Markdown and syntax highlighting immediately if typing is disabled
   if (disableTyping) {
-    message.innerHTML = text;
+    message.innerHTML = marked.parse(text);
+    applySyntaxHighlighting();
     return message;
   }
+
+  // Typing effect without flickering
   let index = 0;
+  let tempText = "";
+  let preRendered = marked.parse(text); // Pre-render Markdown to avoid flickering
+  let charArray = text.split(""); // Convert text into an array
+
   (function typeCharacter() {
-    if (index < text.length) {
-      message.innerHTML = text.slice(0, ++index);
+    if (index < charArray.length) {
+      tempText += charArray[index++];
+      message.innerHTML = marked.parse(tempText); // Render Markdown without re-parsing
+      applySyntaxHighlighting();
       setTimeout(typeCharacter, 20);
     }
   })();
+
   return message;
 }
 
-const mainContent = document.getElementById("main-content");
+// Function to apply syntax highlighting and add copy button
+function applySyntaxHighlighting() {
+  document.querySelectorAll("pre code").forEach((block) => {
+    hljs.highlightElement(block);
+    addCopyButton(block);
+  });
+}
+
+// Function to add a copy button to code blocks
+function addCopyButton(codeBlock) {
+  const pre = codeBlock.parentElement;
+  pre.style.position = "relative";
+  pre.style.overflowX = "auto"; // Enable horizontal scrolling for long code blocks
+
+  if (pre.querySelector(".copy-btn")) return; // Prevent duplicate buttons
+
+  const button = document.createElement("button");
+  button.innerText = "Copy";
+  button.className = "copy-btn";
+  button.style.position = "absolute";
+  button.style.top = "8px";
+  button.style.right = "8px";
+  button.style.padding = "4px 8px";
+  button.style.fontSize = "12px";
+  button.style.border = "none";
+  button.style.cursor = "pointer";
+  button.style.background = "#444";
+  button.style.color = "#fff";
+  button.style.borderRadius = "4px";
+
+  button.addEventListener("click", () => {
+    navigator.clipboard.writeText(codeBlock.innerText).then(() => {
+      button.innerText = "Copied!";
+      setTimeout(() => (button.innerText = "Copy"), 1500);
+    });
+  });
+
+  pre.appendChild(button);
+}
+
+const inputInnerContent = document.getElementById("input-area-inner");
 const chatContainerA = document.getElementById("chat-container");
 const scrollToBottomButton = document.createElement("button");
 scrollToBottomButton.innerHTML = "▼";
 scrollToBottomButton.classList.add("scroll-to-bottom");
-mainContent.appendChild(scrollToBottomButton);
+inputInnerContent.appendChild(scrollToBottomButton);
 
 scrollToBottomButton.addEventListener("click", () => {
   chatContainerA.scrollTo({
