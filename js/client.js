@@ -416,11 +416,16 @@ function startNewChatSession() {
     showToast("New chat session started.", "success");
   }
 
+  const elems = document.getElementsByClassName("scroll-to-bottom");
+  Array.from(elems).forEach((el) => {
+    el.style.display = "none";
+  });
+
   // Clear UI chat and input
   document.getElementById("chat-container").innerHTML = "";
   document.getElementById("message").value = "";
 
-  loadChatHistory(); // Refresh chat history list
+  loadChatHistory();
 }
 
 function loadChatHistory() {
