@@ -94,51 +94,35 @@ app.post("/change-model", async (req, res) => {
   }
 });
 
-const chatHistories = {};
 app.post("/chat", async (req, res) => {
-  const { message, sessionId } = req.body;
+  const { sessionId, messages } = req.body;
 
-  if (!message || !sessionId) {
+  if (!sessionId || !Array.isArray(messages)) {
     return res
       .status(400)
-      .json({ error: "Message and sessionId are required" });
+      .json({ error: "sessionId and messages are required" });
   }
 
   try {
-    if (!chatHistories[sessionId]) {
-      chatHistories[sessionId] = [];
-    }
-    const history = chatHistories[sessionId];
-
-    history.push({ role: "user", content: message });
-
     // Set response headers for streaming
     res.setHeader("Content-Type", "text/plain");
     res.setHeader("Transfer-Encoding", "chunked");
 
-    // Request Ollama with correct message format
+    // Send entire conversation history to Ollama
     const responseStream = await ollama.chat({
       model: MODEL_NAME,
-      messages: history.map(({ role, content }) => ({ role, content })), // Ensure correct format
+      messages,
       stream: true,
     });
 
     let fullResponse = "";
     for await (const chunk of responseStream) {
-      const content = chunk.message?.content || ""; // Ensure it's a string
+      const content = chunk.message?.content || "";
       res.write(content);
       fullResponse += content;
     }
 
     res.end();
-
-    // Store AI response in history
-    history.push({ role: "ai", content: fullResponse });
-
-    // Trim history if too long
-    if (history.length > MAX_HISTORY_LENGTH) {
-      history.shift();
-    }
   } catch (error) {
     console.error("Error processing AI chat:", error.message);
     res.status(500).json({ error: "Internal server error" });

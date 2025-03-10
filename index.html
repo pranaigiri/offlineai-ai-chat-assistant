@@ -3,30 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PranAI - Offline AI Assist</title>
+    <title>PranAI</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="header-container">
-      <div class="header-title">
-        <div class="header">PranAI</div>
-        <span>Offline AI Assist</span>
+    <div class="ui-container">
+      <div class="sidebar">
+        <div class="sidebar-header">Chat History</div>
+        <button
+          class="sidebar-item new-chat-button"
+          onclick="startNewChatSession()"
+        >
+          <img
+            src="./assets/icons/edit.png"
+            alt="New Chat"
+            class="new-chat-icon"
+          />
+          New Chat
+        </button>
+        <div id="chat-history"></div>
       </div>
-      <div id="model-dropdown" class="model-dropdown">
-        <small class="model-label">Select Model</small>
-        <select name="selected-model" id="selected-model"></select>
+      <div id="main-content" class="main-content">
+        <div class="header-container">
+          <div class="header-title">
+            <img
+              src="./assets/icons/menu.png"
+              alt="menu"
+              id="menu-toggle"
+              class="menu-icon"
+            />
+            <img
+              src="./assets/icons/close.png"
+              alt="close"
+              id="close-toggle"
+              class="close-icon hidden"
+            />
+            <span class="header-text">
+              <div class="header">PranAI</div>
+              <span>Offline AI Assist</span>
+            </span>
+          </div>
+          <div id="model-dropdown" class="model-dropdown">
+            <small class="model-label">Select Model</small>
+            <select name="selected-model" id="selected-model"></select>
+          </div>
+        </div>
+        <div id="progress-container">
+          <div id="progress-bar">Downloading...</div>
+        </div>
+        <div class="chat-container" id="chat-container"></div>
+        <div id="input-area" class="input-area">
+          <input type="text" id="message" placeholder="Type a message..." />
+          <button id="sendBtn" onclick="sendMessage()">Send</button>
+        </div>
+        <div id="status-bar" class="status-bar"></div>
+        <div id="toast" class="toast"></div>
       </div>
     </div>
-    <div id="progress-container">
-      <div id="progress-bar">Downloading...</div>
-    </div>
-    <div class="chat-container" id="chat-container"></div>
-    <div id="input-area" class="input-area">
-      <input type="text" id="message" placeholder="Type a message..." />
-      <button id="sendBtn" onclick="sendMessage()">Send</button>
-    </div>
-    <div id="status-bar" class="status-bar"></div>
-    <div id="toast" class="toast"></div>
     <script src="client.js"></script>
   </body>
 </html>

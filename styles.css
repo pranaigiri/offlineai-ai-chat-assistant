@@ -8,7 +8,87 @@ body {
   background-color: #f4f4f4;
 }
 
-.header-title.span{
+
+.sidebar {
+  width: 0px;
+  background-color: #f0f0f0;
+  border-right: 1px solid #ddd;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  transition: width 0.3s ease; /* Smooth transition for sidebar width */
+}
+
+.sidebar-header{
+  position: sticky;
+  top: 0;
+}
+
+.sidebar-header, .header-container {
+  min-height: 40px;
+  padding: 10px;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.sidebar-item {
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-item:hover {
+  background-color: #e0e0e0;
+}
+
+
+.main-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  transition: .3s ease;
+}
+
+.header-text{
+  text-align: left;
+  padding-left: .5rem;
+  white-space: nowrap;
+}
+
+
+.ui-container {
+  display: flex;
+  height: 100%;
+}
+
+
+.ui-container.sidebar-open .sidebar {
+  width: 300px;
+}
+
+.ui-container.sidebar-open .main-content {
+  width: calc(100vw - 300px);
+}
+
+.ui-container.sidebar-open .header-text {
+  display: none;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+}
+
+.header-title span {
   font-size: 14px;
   color: #676767;
 }
@@ -19,9 +99,6 @@ body {
   padding: 20px;
   display: flex;
   flex-direction: column;
-  max-width: 800px;
-  margin: 0 auto;
-  width: 90%;
 }
 
 .message {
@@ -53,12 +130,12 @@ body {
   align-items: center;
   max-width: 800px;
   margin: auto;
-  width: 100%;
+  width: 90%;
   border-top-right-radius: 12px;
   border-top-left-radius: 12px;
-  width: 90%;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
 #message {
   flex-grow: 1;
   padding: 10px 15px;
@@ -87,40 +164,37 @@ button:hover {
   background-color: #0056b3;
 }
 
-.header-container{
+.header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding: 10px 20px;
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 10px 20px;
-} 
+}
 
 .header {
   font-size: larger;
-  font-weight: 600
+  font-weight: 600;
 }
 
-.model-dropdown{
+.model-dropdown {
   display: flex;
   flex-flow: column;
   justify-content: end;
   align-items: center;
 }
 
-.model-label{
+.model-label {
   font-weight: 600;
   color: #333;
 }
 
-
-.status-bar {
+.status-bar, .toast {
   position: fixed;
-  top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #ff9900;
+  background-color: #333;
   color: white;
   padding: 8px 16px;
   border-radius: 5px;
@@ -129,18 +203,13 @@ button:hover {
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+.status-bar {
+  top: 10px;
+  background-color: #ff9900;
+}
+
 .toast {
-  position: fixed;
   bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background-color: #333;
-  color: white;
-  padding: 10px 16px;
-  border-radius: 5px;
-  display: none;
-  font-size: 14px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 .toast.success {
@@ -165,7 +234,7 @@ button:hover {
 #progress-container {
   width: 100%;
   background-color: #ff9900;
-  height: 0px; /* Initially hidden */
+  height: 0;
   opacity: 0;
   position: relative;
   display: flex;
@@ -181,12 +250,12 @@ button:hover {
   white-space: nowrap;
 }
 
-.disabled{
+.disabled {
   pointer-events: none;
-    opacity: 0.8;
+  opacity: 0.8;
 }
 
-.info-card{
+.info-card {
   background: #ebebeb;
   padding: 0.5rem 1rem;
   border-radius: 8px;
@@ -196,7 +265,7 @@ button:hover {
   margin: 1rem;
 }
 
-.info-card span{
+.info-card span {
   font-weight: 500;
 }
 
@@ -205,19 +274,15 @@ button:hover {
   10%, 90% { opacity: 1; }
 }
 
-
-
-
 @media (max-width: 600px) {
-  .chat-container{
+  .chat-container {
       width: 95%;
   }
 }
 
-
 /* styles.css (Add these styles to your existing styles.css) */
 .scroll-to-bottom {
-  position: fixed;
+  position: absolute;
   bottom: 70px;
   right: 50%;
   transform: translateX(50%);
@@ -233,4 +298,40 @@ button:hover {
 
 .scroll-to-bottom:hover {
   background-color: #727272;
+}
+
+.menu-icon, .close-icon {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}
+
+
+.sidebar-item.new-chat-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  border-radius: 0px;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 16px;
+  color: #333;
+  font-size: small;
+  justify-content: center;
+  padding: 1rem 0rem;
+}
+
+.sidebar-item.new-chat-button:hover {
+  background-color: white;
+}
+
+.new-chat-icon {
+  width: 20px;
+  height: 20px;
 }

@@ -1,9 +1,27 @@
-const input = document.getElementById("message");
-input.addEventListener("keydown", (event) => {
-  if (event.key === "Enter") {
-    event.preventDefault();
-    sendMessage();
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  const uiContainer = document.querySelector(".ui-container");
+  const menuToggle = document.getElementById("menu-toggle");
+  const closeToggle = document.getElementById("close-toggle");
+  const messageInput = document.getElementById("message");
+
+  menuToggle.addEventListener("click", () => {
+    uiContainer.classList.add("sidebar-open");
+    menuToggle.classList.add("hidden");
+    closeToggle.classList.remove("hidden");
+  });
+
+  closeToggle.addEventListener("click", () => {
+    uiContainer.classList.remove("sidebar-open");
+    closeToggle.classList.add("hidden");
+    menuToggle.classList.remove("hidden");
+  });
+
+  messageInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault(); // Prevent newline in input
+      sendMessage();
+    }
+  });
 });
 
 const statusBar = document.getElementById("status-bar");
@@ -146,43 +164,88 @@ function checkDownloadProgress(selectedModel, availableModelList) {
 }
 
 function generateSessionId() {
-  return (
-    Math.random().toString(36).substring(2, 15) +
-    Math.random().toString(36).substring(2, 15)
-  );
+  return Date.now().toString(36) + Math.random().toString(36).substring(2, 15);
 }
 
 let sessionId = localStorage.getItem("sessionId") || generateSessionId();
 localStorage.setItem("sessionId", sessionId);
 
+const MAX_HISTORY_LENGTH = 20;
 async function sendMessage() {
   const input = document.getElementById("message");
   const message = input.value.trim();
   if (!message) return;
 
+  const chatTitle = sessionId;
+  let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || {};
+  chatHistory[chatTitle] = chatHistory[chatTitle] || [];
+
+  // Add user message to history
+  chatHistory[chatTitle].push({ role: "user", content: message });
+
+  // Trim history to maintain a max of 20 messages
+  if (chatHistory[chatTitle].length > MAX_HISTORY_LENGTH) {
+    chatHistory[chatTitle] = chatHistory[chatTitle].slice(-MAX_HISTORY_LENGTH);
+  }
+
+  localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+
   appendMessage(message, "user-message", true);
   input.value = "";
 
+  const typingIndicator = appendMessage(
+    "PranAI is typing...",
+    "ai-message typing-indicator",
+    true
+  );
+  let dots = 0;
+  const typingAnimation = setInterval(() => {
+    dots = (dots + 1) % 4;
+    typingIndicator.innerText = "PranAI is typing" + ".".repeat(dots);
+  }, 500);
+
   try {
+    // Send trimmed chat history to server
     const res = await fetch("http://localhost:3000/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message, sessionId }),
+      body: JSON.stringify({ sessionId, messages: chatHistory[chatTitle] }),
     });
 
-    if (!res.ok) {
-      throw new Error("Error fetching response.");
-    }
+    clearInterval(typingAnimation);
+    typingIndicator.remove();
+
+    if (!res.ok) throw new Error("Error fetching response.");
 
     const reader = res.body.getReader();
     let aiMessageElement = appendMessage("", "ai-message");
+    let aiMessageContent = "";
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
-      aiMessageElement.innerText += new TextDecoder().decode(value);
+      const chunk = new TextDecoder().decode(value);
+      aiMessageElement.innerText += chunk;
+      aiMessageContent += chunk;
     }
+
+    // Add AI response to chat history
+    chatHistory[chatTitle].push({
+      role: "assistant",
+      content: aiMessageContent,
+    });
+
+    // Trim again after adding AI response
+    if (chatHistory[chatTitle].length > MAX_HISTORY_LENGTH) {
+      chatHistory[chatTitle] = chatHistory[chatTitle].slice(
+        -MAX_HISTORY_LENGTH
+      );
+    }
+
+    localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
   } catch (error) {
+    clearInterval(typingAnimation);
+    typingIndicator.remove();
     appendMessage(
       "Error fetching response. Please try again.",
       "ai-message error",
@@ -211,11 +274,12 @@ function appendMessage(text, className, disableTyping = false) {
   return message;
 }
 
+const mainContent = document.getElementById("main-content");
 const chatContainerA = document.getElementById("chat-container");
 const scrollToBottomButton = document.createElement("button");
 scrollToBottomButton.innerHTML = "▼";
 scrollToBottomButton.classList.add("scroll-to-bottom");
-document.body.appendChild(scrollToBottomButton);
+mainContent.appendChild(scrollToBottomButton);
 
 scrollToBottomButton.addEventListener("click", () => {
   chatContainerA.scrollTo({
@@ -237,3 +301,90 @@ chatContainerA.addEventListener("scroll", () => {
     scrollToBottomButton.style.display = "none";
   }
 });
+
+//#region Chat History
+function startNewChatSession() {
+  let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || {};
+  let currentSession = localStorage.getItem("sessionId");
+
+  // Check if the current session has messages before creating a new one
+  if (
+    currentSession &&
+    chatHistory[currentSession] &&
+    chatHistory[currentSession].length === 0
+  ) {
+    showToast(
+      "Cannot start a new session. Current session is empty.",
+      "warning"
+    );
+    return;
+  }
+
+  sessionId = generateSessionId();
+  localStorage.setItem("sessionId", sessionId);
+
+  // Clear UI chat and input
+  document.getElementById("chat-container").innerHTML = "";
+  document.getElementById("message").value = "";
+
+  // Initialize new session in chat history
+  chatHistory[sessionId] = [];
+  localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+
+  showToast("New chat session started.", "success");
+
+  loadChatHistory(); // Refresh chat history list
+}
+
+loadChatHistory();
+function loadChatHistory() {
+  const chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || {};
+  const chatHistoryContainer = document.getElementById("chat-history");
+  chatHistoryContainer.innerHTML = "";
+
+  Object.keys(chatHistory).forEach((session) => {
+    const chatItem = document.createElement("div");
+    chatItem.className = "sidebar-item";
+
+    // for chat title
+    const messages = chatHistory[session] || [];
+    const firstUserMessage =
+      messages.find((msg) => msg.role === "user")?.content || "New Chat";
+    chatItem.innerText =
+      firstUserMessage.length > 20
+        ? firstUserMessage.slice(0, 20) + "..."
+        : firstUserMessage;
+
+    chatItem.addEventListener("click", () => loadChatSession(session));
+    chatHistoryContainer.appendChild(chatItem);
+  });
+}
+
+function loadChatSession(selectedSessionId) {
+  sessionId = selectedSessionId;
+  localStorage.setItem("sessionId", sessionId);
+
+  const chatContainer = document.getElementById("chat-container");
+  chatContainer.innerHTML = ""; // Clear current chat messages
+
+  let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || {};
+  let messages = chatHistory[selectedSessionId] || [];
+
+  // Ensure the chat history doesn't exceed max messages
+  if (messages.length > MAX_HISTORY_LENGTH) {
+    messages = messages.slice(-MAX_HISTORY_LENGTH);
+    chatHistory[selectedSessionId] = messages;
+    localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+  }
+
+  // Display messages in UI
+  messages.forEach((msg) => {
+    appendMessage(
+      msg.content,
+      msg.role === "user" ? "user-message" : "ai-message",
+      true
+    );
+  });
+
+  showToast("Loaded previous chat.", "info");
+}
