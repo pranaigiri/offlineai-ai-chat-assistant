@@ -57,12 +57,36 @@ const ensureModel = async (model) => {
     if (models.models.some((m) => m.name === model)) return;
 
     const pullProcess = spawn("ollama", ["pull", model]);
+
     pullProcess.stdout.on("data", (data) => {
-      const match = data.toString().match(/(\d+)%/);
-      if (match) downloadProgress = parseInt(match[1]);
+      const output = data.toString();
+      console.log(output); // Log the output for debugging
+      const match = output.match(/(\d+)%/);
+      if (match) {
+        downloadProgress = parseInt(match[1]);
+        console.log(`Download progress: ${downloadProgress}%`);
+      }
     });
-    pullProcess.on("close", () => (downloadProgress = 100));
-  } catch {}
+
+    pullProcess.stderr.on("data", (data) => {
+      console.error(`ollama pull stderr: ${data}`);
+    });
+
+    pullProcess.on("error", (error) => {
+      console.error("Failed to start ollama pull:", error);
+    });
+
+    pullProcess.on("close", (code) => {
+      if (code === 0) {
+        downloadProgress = 100;
+        console.log("Model download complete.");
+      } else {
+        console.error(`ollama pull exited with code ${code}`);
+      }
+    });
+  } catch (error) {
+    console.error("Error ensuring model:", error);
+  }
 };
 
 const initOllama = async () => {

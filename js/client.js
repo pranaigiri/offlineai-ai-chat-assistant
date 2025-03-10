@@ -158,6 +158,7 @@ function checkDownloadProgress(selectedModel, availableModelList) {
       progressContainer.style.opacity = "0";
     }, 2000);
     createInfoCard();
+    removeWelcomeMessage();
   };
 
   const interval = setInterval(async () => {
@@ -265,7 +266,6 @@ async function sendMessage() {
         -MAX_HISTORY_LENGTH
       );
     }
-
     localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
   } catch (error) {
     clearInterval(typingAnimation);
@@ -278,12 +278,15 @@ async function sendMessage() {
   }
 }
 
-function appendMessage(text, className, disableTyping = false) {
+function removeWelcomeMessage() {
   const welcomeMsgContainer = document.getElementById("welcome-message");
   if (welcomeMsgContainer) {
     welcomeMsgContainer.style.display = "none";
   }
+}
 
+function appendMessage(text, className, disableTyping = false) {
+  removeWelcomeMessage();
   const chatContainer = document.getElementById("chat-container");
   const message = document.createElement("div");
   message.className = `message ${className}`;
@@ -356,7 +359,7 @@ function addCopyButton(codeBlock) {
 }
 
 const inputInnerContent = document.getElementById("input-area-inner");
-const chatContainerA = document.getElementById("chat-container");
+const chatContainerA = document.getElementById("chat-outer-container");
 const scrollToBottomButton = document.createElement("button");
 scrollToBottomButton.innerHTML = "▼";
 scrollToBottomButton.classList.add("scroll-to-bottom");
@@ -367,7 +370,6 @@ scrollToBottomButton.addEventListener("click", () => {
     top: chatContainerA.scrollHeight,
     behavior: "smooth",
   });
-  //scrollToBottomButton.style.display = "none";
 });
 
 chatContainerA.addEventListener("scroll", () => {
@@ -388,31 +390,28 @@ function startNewChatSession() {
   let chatHistory = JSON.parse(localStorage.getItem("chatHistory")) || {};
   let currentSession = localStorage.getItem("sessionId");
 
-  // Check if the current session has messages before creating a new one
-  if (
-    currentSession &&
-    chatHistory[currentSession] &&
-    chatHistory[currentSession].length === 0
-  ) {
-    showToast(
-      "Cannot start a new session. Current session is empty.",
-      "warning"
-    );
-    return;
-  }
+  // Check if there's already an empty session
+  let emptySessionId = Object.keys(chatHistory).find(
+    (sessionId) => chatHistory[sessionId].length === 0
+  );
 
-  sessionId = generateSessionId();
-  localStorage.setItem("sessionId", sessionId);
+  if (emptySessionId) {
+    // Switch to the empty session instead of creating a new one
+    sessionId = emptySessionId;
+    localStorage.setItem("sessionId", sessionId);
+    showToast("Switched to an existing empty session.", "info");
+  } else {
+    // If no empty session exists, create a new one
+    sessionId = generateSessionId();
+    chatHistory[sessionId] = [];
+    localStorage.setItem("sessionId", sessionId);
+    localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
+    showToast("New chat session started.", "success");
+  }
 
   // Clear UI chat and input
   document.getElementById("chat-container").innerHTML = "";
   document.getElementById("message").value = "";
-
-  // Initialize new session in chat history
-  chatHistory[sessionId] = [];
-  localStorage.setItem("chatHistory", JSON.stringify(chatHistory));
-
-  showToast("New chat session started.", "success");
 
   loadChatHistory(); // Refresh chat history list
 }
@@ -491,4 +490,4 @@ function loadChatSession(selectedSessionId) {
   showToast("Loaded previous chat.", "info");
 }
 
-loadChatHistory();
+startNewChatSession();
