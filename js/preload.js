@@ -1,5 +1,5 @@
-import { contextBridge, ipcRenderer } from "electron";
+const { contextBridge, ipcRenderer } = require("electron/renderer");
 
-contextBridge.exposeInMainWorld("api", {
-  sendMessage: (message) => ipcRenderer.invoke("sendMessage", message),
+contextBridge.exposeInMainWorld("electronAPI", {
+  setTitle: (title) => ipcRenderer.send("set-title", title),
 });
