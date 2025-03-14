@@ -1,5 +1,5 @@
-import { app, BrowserWindow, Tray, Menu, screen } from "electron";
-import { spawn } from "child_process";
+import { app, BrowserWindow, screen, dialog, shell } from "electron";
+import { spawn, execSync } from "child_process";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -10,7 +10,26 @@ let mainWindow;
 let tray;
 let serverProcess;
 
-app.whenReady().then(() => {
+const isOllamaInstalled = () => {
+  try {
+    execSync("ollama --version", { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+};
+
+app.whenReady().then(async () => {
+  if (!isOllamaInstalled()) {
+    dialog.showErrorBox(
+      "Ollama Required",
+      "Ollama is required to run this app. Please install Ollama from https://ollama.com/download"
+    );
+    shell.openExternal("https://ollama.com/download"); //Open download link in browser
+    app.quit();
+    return; // Prevent app from starting if Ollama is not installed
+  }
+
   // Start the API server using spawn instead of exec
   serverProcess = spawn("node", ["js/server.js"], {
     stdio: "inherit",
@@ -44,16 +63,6 @@ app.whenReady().then(() => {
     },
   });
   mainWindow.loadFile("index.html");
-
-  // Add system tray icon (optional)
-  tray = new Tray(path.join(__dirname, "../assets/logo/PranAI.ico"));
-  tray.setToolTip("PranAI Chat Assistant");
-  tray.setContextMenu(
-    Menu.buildFromTemplate([
-      { label: "Open", click: () => mainWindow.show() },
-      { label: "Exit", role: "quit" },
-    ])
-  );
 
   // Handle window close properly
   mainWindow.on("closed", () => {
