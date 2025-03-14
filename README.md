@@ -115,6 +115,9 @@ We welcome contributions to improve PranAI! Here’s how you can help:
 
 ## 📸 Preview
 Here are some previews of PranAI in action:
+### Chat with the Latest Models - Gemma 3 and Deepseek R1
+![Chat with Latest Models](https://github.com/user-attachments/assets/e62ce949-9ade-46dd-a85f-2592c1281740)
+
 ### Highlight & Chat History
 ![Highlight   History](https://github.com/user-attachments/assets/566d11b1-9d1f-4f4b-bc6c-6a6155d14351)
 
