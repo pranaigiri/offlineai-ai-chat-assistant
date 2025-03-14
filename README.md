@@ -14,10 +14,9 @@ _A lightweight, open-source AI chat assistant that works offline with multiple m
 ## 👅 Installation
 
 ### Prerequisites
-
+- [Ollama](https://ollama.ai/) installed and configured
 - [Node.js](https://nodejs.org/) (LTS Recommended)
 - [Electron](https://www.electronjs.org/)
-- [Ollama](https://ollama.ai/) installed and configured
 
 ### Steps
 
@@ -86,7 +85,7 @@ This will use: `ollama pull deepseek-r1`
 
 ## ⚠️ Project Status
 
-This project was built in 2 days, for learning purposes. It requires refactoring, optimization, and several improvements. Contributions and suggestions are welcome!
+This project is in an early development stage and will continue improving with refactoring and optimizations. Contributions and suggestions are welcome!
 
 ### 🌠 Improvements Needed
 - **Realtime Download Progress:** Parse and display the progress of `ollama pull` execution, although progress information is visible in the console.
