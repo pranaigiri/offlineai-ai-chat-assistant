@@ -89,7 +89,7 @@ This will use: `ollama pull deepseek-r1`
 
 ## ⚠️ Project Status
 
-This project is in an early development stage and will continue improving with refactoring and optimizations. Contributions and suggestions are welcome!
+This project is experimental and in an early development stage. It will continue improving with refactoring and optimizations. Contributions and suggestions are welcome!
 
 ### 🌠 Improvements Needed
 
