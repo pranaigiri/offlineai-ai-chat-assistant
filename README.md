@@ -116,32 +116,28 @@ We welcome contributions to improve OfflineAI! Here’s how you can help:
 4. Push to your fork.
 5. Open a Pull Request.
 
-## 📸 Preview
+## 📸 Preview  
 
-Here are some previews of OfflineAI in action:
+Take a look at OfflineAI in action:  
 
-### Chat with the Latest Models - Gemma 3 and Deepseek R1
+### 💬 Chat with the Latest Models – Gemma 3 & Deepseek R1  
+Easily add new models by updating the `config.json` file and experiment with different AI capabilities.  
+![3](https://github.com/user-attachments/assets/86ee0efa-1e92-4f10-af7c-7b75976d8470)  
 
-![3](https://github.com/user-attachments/assets/86ee0efa-1e92-4f10-af7c-7b75976d8470)
+### ✨ Syntax Highlighting & Chat History  
+OfflineAI formats AI responses using Markdown. We use `highlight.js` for syntax highlighting and `marked.min.js` for structured formatting of code, lists, and more.  
+![1](https://github.com/user-attachments/assets/02fc9afb-d488-4c5a-a2f2-4966676efb8e)  
 
+### 🖥️ Desktop Mode  
+Fully responsive and optimized for different screen sizes.  
+![2](https://github.com/user-attachments/assets/1a246d6b-bee9-4e95-b563-2ce125085b8a)  
 
-### Highlight & Chat History
+### 🧠 Chat Memory  
+For better conversation flow, OfflineAI retains up to 20 previous messages, maintaining context across interactions.  
+![4](https://github.com/user-attachments/assets/5b26f680-f2e6-4044-910f-c8ef77ce1b3e)  
 
-![1](https://github.com/user-attachments/assets/02fc9afb-d488-4c5a-a2f2-4966676efb8e)
+---  
 
-
-### Desktop Mode
-
-![2](https://github.com/user-attachments/assets/1a246d6b-bee9-4e95-b563-2ce125085b8a)
-
-
-### Chat Memory
-
-![4](https://github.com/user-attachments/assets/5b26f680-f2e6-4044-910f-c8ef77ce1b3e)
-
-
----
-
-For any issues, suggestions, or feature requests, feel free to open an issue in the repository!
+This is an experimental project, and contributions are welcome! Feel free to submit feature requests, report issues, or suggest improvements by opening an issue in the repository. 🚀
 
 **Happy Chatting! 🤖**
