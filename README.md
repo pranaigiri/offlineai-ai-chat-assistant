@@ -1,4 +1,4 @@
-# OfflineAI - Offline AI Chat Assistant
+# OfflineAI – Not a Big Deal, Just a Learning Experiment!
 
 ![5](https://github.com/user-attachments/assets/760ddbe0-e663-461d-9030-4d69c8712dd6)
 
