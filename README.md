@@ -1,6 +1,7 @@
 # OfflineAI - Offline AI Chat Assistant
 
-![CoverDark 2](https://github.com/user-attachments/assets/13071368-4f5f-4e6a-9ea7-6f99e0689842)
+![5](https://github.com/user-attachments/assets/760ddbe0-e663-461d-9030-4d69c8712dd6)
+
 _A lightweight, open-source AI chat assistant that works offline with multiple model selection. Free to use, private, built using Electron & Express._
 
 ## 🚀 Features
@@ -121,19 +122,23 @@ Here are some previews of OfflineAI in action:
 
 ### Chat with the Latest Models - Gemma 3 and Deepseek R1
 
-![Chat with Latest Models](https://github.com/user-attachments/assets/e62ce949-9ade-46dd-a85f-2592c1281740)
+![3](https://github.com/user-attachments/assets/86ee0efa-1e92-4f10-af7c-7b75976d8470)
+
 
 ### Highlight & Chat History
 
-![Highlight   History](https://github.com/user-attachments/assets/566d11b1-9d1f-4f4b-bc6c-6a6155d14351)
+![1](https://github.com/user-attachments/assets/02fc9afb-d488-4c5a-a2f2-4966676efb8e)
+
 
 ### Desktop Mode
 
-![Desktop Mode](https://github.com/user-attachments/assets/31a5305c-cb4e-4746-ac76-cbf08f7705c5)
+![2](https://github.com/user-attachments/assets/1a246d6b-bee9-4e95-b563-2ce125085b8a)
+
 
 ### Chat Memory
 
-![Chat Memory](https://github.com/user-attachments/assets/77d2a545-5c1e-4593-8ffa-22b8fd245708)
+![4](https://github.com/user-attachments/assets/5b26f680-f2e6-4044-910f-c8ef77ce1b3e)
+
 
 ---
 
