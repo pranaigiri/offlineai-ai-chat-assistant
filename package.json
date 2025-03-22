@@ -1,7 +1,7 @@
 {
-  "name": "pranai",
+  "name": "offlineai",
   "version": "1.0.0",
-  "description": "PranAI - Your offline AI Chat Assistant with multiple model selection, free to use, offline, and open source.",
+  "description": "OfflineAI - Your offline AI Chat Assistant with multiple model selection, free to use, offline, and open source.",
   "main": "js/main.js",
   "scripts": {
     "start": "electron .",
@@ -9,8 +9,34 @@
     "build": "electron-builder",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "build": {
+    "appId": "com.offlineai",
+    "productName": "OfflineAI",
+    "compression": "maximum",
+    "win": {
+      "icon": "assets/logo/OfflineAI.ico"
+    },
+    "files": [
+      "js/**/*",
+      "index.html",
+      "client.js",
+      "preload.js",
+      "config/**",
+      "assets/**",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "config",
+        "to": "config",
+        "filter": [
+          "config.json"
+        ]
+      }
+    ]
+  },
   "keywords": [
-    "PranAI",
+    "OfflineAI",
     "AI Chat",
     "offline assistant",
     "electron",
@@ -30,5 +56,5 @@
     "electron": "^35.0.0",
     "electron-builder": "^24.9.1"
   },
-  "type": "module"
+  "type": "commonjs"
 }

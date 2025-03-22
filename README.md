@@ -1,4 +1,4 @@
-# PranAI - Offline AI Chat Assistant
+# OfflineAI - Offline AI Chat Assistant
 
 ![CoverDark 2](https://github.com/user-attachments/assets/13071368-4f5f-4e6a-9ea7-6f99e0689842)
 _A lightweight, open-source AI chat assistant that works offline with multiple model selection. Free to use, private, built using Electron & Express._
@@ -14,6 +14,7 @@ _A lightweight, open-source AI chat assistant that works offline with multiple m
 ## 👅 Installation
 
 ### Prerequisites
+
 - [Ollama](https://ollama.ai/) installed and configured
 - [Node.js](https://nodejs.org/) (LTS Recommended)
 - [Electron](https://www.electronjs.org/)
@@ -22,8 +23,8 @@ _A lightweight, open-source AI chat assistant that works offline with multiple m
 
 ```sh
 # Clone the repository
-git clone https://github.com/yourusername/pranai-offline-ai-chat-assist.git
-cd pranai-offline-ai-chat-assist
+git clone https://github.com/yourusername/offlineai-offline-ai-chat-assist.git
+cd offlineai-offline-ai-chat-assist
 
 # Install dependencies
 npm install
@@ -34,7 +35,7 @@ npm start
 
 ## 🔧 Adding Models
 
-You can add custom [Ollama-compatible models](https://ollama.com/search) to PranAI:
+You can add custom [Ollama-compatible models](https://ollama.com/search) to OfflineAI:
 
 1. Open `config/config.json`.
 2. Add the model details under `ALL_AVAILABLE_MODELS`.
@@ -81,13 +82,14 @@ You can add custom [Ollama-compatible models](https://ollama.com/search) to Pran
 
 This will use: `ollama pull deepseek-r1`
 
-4. Restart PranAI and select the model from the **Model Selection** panel. The model will be downloaded once and stored locally in Ollama.
+4. Restart OfflineAI and select the model from the **Model Selection** panel. The model will be downloaded once and stored locally in Ollama.
 
 ## ⚠️ Project Status
 
 This project is in an early development stage and will continue improving with refactoring and optimizations. Contributions and suggestions are welcome!
 
 ### 🌠 Improvements Needed
+
 - **Realtime Download Progress:** Parse and display the progress of `ollama pull` execution, although progress information is visible in the console.
 - **Remove Flickering on Code Highlight:** Flickering issues when displaying code snippets with syntax highlighting.
 - **Live Server Compatibility:** Making the app function in a live server environment without Electron.
@@ -98,7 +100,7 @@ This project is licensed under the [ISC License](LICENSE).
 
 ## 🤝 How to Contribute
 
-We welcome contributions to improve PranAI! Here’s how you can help:
+We welcome contributions to improve OfflineAI! Here’s how you can help:
 
 - **Bug Fixes & Optimizations**: Identify and fix issues or improve performance.
 - **Feature Enhancements**: Suggest and implement new features.
@@ -114,17 +116,23 @@ We welcome contributions to improve PranAI! Here’s how you can help:
 5. Open a Pull Request.
 
 ## 📸 Preview
-Here are some previews of PranAI in action:
+
+Here are some previews of OfflineAI in action:
+
 ### Chat with the Latest Models - Gemma 3 and Deepseek R1
+
 ![Chat with Latest Models](https://github.com/user-attachments/assets/e62ce949-9ade-46dd-a85f-2592c1281740)
 
 ### Highlight & Chat History
+
 ![Highlight   History](https://github.com/user-attachments/assets/566d11b1-9d1f-4f4b-bc6c-6a6155d14351)
 
 ### Desktop Mode
+
 ![Desktop Mode](https://github.com/user-attachments/assets/31a5305c-cb4e-4746-ac76-cbf08f7705c5)
 
 ### Chat Memory
+
 ![Chat Memory](https://github.com/user-attachments/assets/77d2a545-5c1e-4593-8ffa-22b8fd245708)
 
 ---

@@ -1,14 +1,39 @@
-import { app, BrowserWindow, screen, dialog, shell } from "electron";
-import { spawn, execSync } from "child_process";
-import path from "path";
-import { fileURLToPath } from "url";
+const {
+  app,
+  BrowserWindow,
+  screen,
+  dialog,
+  shell,
+  ipcMain,
+} = require("electron");
+const { spawn, execSync } = require("child_process");
+const path = require("path");
+const { getServerPort } = require("./server.js");
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// CommonJS already provides __filename and __dirname, no need to redefine them
 
 let mainWindow;
 let tray;
 let serverProcess;
+
+// Get the correct path for `config.json`
+const fs = require("fs");
+// Dynamically get the correct config file path
+const getConfigPath = () => {
+  return app.isPackaged
+    ? path.join(process.resourcesPath, "config/config.json") // For built `.exe`
+    : path.join(__dirname, "..", "config/config.json"); // For development (`npm start`)
+};
+
+// Read config file
+const configPath = getConfigPath();
+
+if (!fs.existsSync(configPath)) {
+  console.error("Config file not found at:", configPath);
+} else {
+  const configData = JSON.parse(fs.readFileSync(configPath, "utf-8"));
+  console.log("Config loaded successfully", configData);
+}
 
 const isOllamaInstalled = () => {
   try {
@@ -55,13 +80,19 @@ app.whenReady().then(async () => {
     alwaysOnTop: false, // Set true if you want it to stay above other windows
     minimizable: true,
     resizable: true,
-    icon: path.join(__dirname, "../assets/logo/PranAI.ico"),
+    icon: path.join(__dirname, "../assets/logo/OfflineAI.ico"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      nodeIntegration: false,
       contextIsolation: true,
+      enableRemoteModule: false,
+      nodeIntegration: true,
     },
   });
+
+  ipcMain.handle("get-server-port", async () => {
+    return getServerPort(); // Return the server port (async)
+  });
+
   mainWindow.loadFile("index.html");
 
   // Handle window close properly
