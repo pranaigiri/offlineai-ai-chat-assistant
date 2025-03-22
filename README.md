@@ -1,7 +1,8 @@
 # OfflineAI – AI Chat Assistant  
 > "Not a Big Deal, Just a Learning Experiment!"  
 
-![5](https://github.com/user-attachments/assets/760ddbe0-e663-461d-9030-4d69c8712dd6)
+
+![5](https://github.com/user-attachments/assets/89ec1189-750c-47fb-a62e-289e07d0f85f)
 
 _A lightweight, open-source AI chat assistant that works offline with multiple model selection. Free to use, private, built using Electron & Express._
 
