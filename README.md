@@ -140,4 +140,11 @@ For better conversation flow, OfflineAI retains up to 20 previous messages, main
 
 This is an experimental project, and contributions are welcome! Feel free to submit feature requests, report issues, or suggest improvements by opening an issue in the repository. 🚀
 
+## Support Me
+
+If you find this tool useful, consider supporting my work. ❤️
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20My%20Work-orange?style=for-the-badge&logo=buy-me-a-coffee)](https://buymeacoffee.com/pranaigiri)
+
+
 **Happy Chatting! 🤖**
